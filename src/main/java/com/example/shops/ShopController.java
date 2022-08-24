@@ -37,4 +37,8 @@ public class ShopController {
         return shopService.deleteShopById(shopId);
 
     }
+    @PatchMapping("/shops/{shopId}/{name}")//http://localhost:8080/shops/1/name
+    public Shop patchShop(@PathVariable String shopId, @PathVariable String name) {
+       return shopService.patchShop(shopId,name);
+    }
 }

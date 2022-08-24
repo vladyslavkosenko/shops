@@ -30,4 +30,9 @@ public class ShopService {
     public Shop deleteShopById(String shopId) {
         return db.remove(shopId);
     }
+    public Shop patchShop(String shopId, String name) {
+        Shop shop = db.get(shopId);
+        shop.setName(name);
+        return shop;
+    }
 }
