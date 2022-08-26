@@ -1,5 +1,6 @@
 package com.example.shops;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.util.HashMap;
 public class ShopController {
     private ShopService shopService;
 
+    @Autowired
     public ShopController(ShopService shopService) {
         this.shopService = shopService;
     }
@@ -37,8 +39,9 @@ public class ShopController {
         return shopService.deleteShopById(shopId);
 
     }
+
     @PatchMapping("/shops/{shopId}/{name}")//http://localhost:8080/shops/1/name
     public Shop patchShop(@PathVariable String shopId, @PathVariable String name) {
-       return shopService.patchShop(shopId,name);
+        return shopService.patchShop(shopId, name);
     }
 }

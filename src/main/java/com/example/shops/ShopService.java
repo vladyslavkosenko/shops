@@ -10,15 +10,13 @@ public class ShopService {
 
     public Shop addShop(Shop shop) {
         db.put(shop.getId(), shop);
-        System.out.println("Shop with id " + shop.getId() + " added");
         return shop;
     }
 
     public Shop getShopById(String shopId) {
-        Shop shop1 = db.get(shopId);
-        if (shop1 != null) {
-            System.out.println("shop with id " + shop1.getId() + " pojo");
-            return shop1;
+        Shop shop = db.get(shopId);
+        if (shop != null) {
+            return shop;
         }
         return null;
     }
