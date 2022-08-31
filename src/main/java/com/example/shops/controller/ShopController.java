@@ -1,5 +1,7 @@
-package com.example.shops;
+package com.example.shops.controller;
 
+import com.example.shops.entity.Shop;
+import com.example.shops.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +42,9 @@ public class ShopController {
 
     }
 
-    @PatchMapping("/shops/{shopId}/{name}")//http://localhost:8080/shops/1/name
-    public Shop patchShop(@PathVariable String shopId, @PathVariable String name) {
-        return shopService.patchShop(shopId, name);
+    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Shop update(@RequestBody Shop shop, @PathVariable String id) {
+
+        return shopService.patchShop(shop, id);
     }
 }

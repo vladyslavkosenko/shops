@@ -1,5 +1,6 @@
-package com.example.shops;
+package com.example.shops.service;
 
+import com.example.shops.entity.Shop;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -28,9 +29,14 @@ public class ShopService {
     public Shop deleteShopById(String shopId) {
         return db.remove(shopId);
     }
-    public Shop patchShop(String shopId, String name) {
-        Shop shop = db.get(shopId);
-        shop.setName(name);
+
+    public Shop patchShop(Shop shop, String id) {
+        Shop shopRequestBody = db.get(id);
+        shopRequestBody.setName(shop.getName());
+        shopRequestBody.setCity(shop.getCity());
+        shopRequestBody.setStreet(shop.getStreet());
+        shopRequestBody.setEmployees(shop.getEmployees());
+        shopRequestBody.setWebsite(shop.getWebsite());
         return shop;
     }
 }

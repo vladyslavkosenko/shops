@@ -1,5 +1,4 @@
-package com.example.shops;
-
+package com.example.shops.entity;
 public class Shop {
     String id;
     String city;
