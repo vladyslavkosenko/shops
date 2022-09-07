@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 @RestController
 public class ShopController {
-    private ShopService shopService;
+    private final ShopService shopService;
 
     @Autowired
     public ShopController(ShopService shopService) {
@@ -21,30 +21,25 @@ public class ShopController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public Shop createShop(@RequestBody Shop shop) {
         return shopService.addShop(shop);
-
     }
 
     @GetMapping("/shops/{shopId}")
     public Shop getShopById(@PathVariable("shopId") String shopId) {
         return shopService.getShopById(shopId);
-
     }
 
     @GetMapping("/shops/oll")
     public HashMap<String, Shop> getShopOll() {
-        return shopService.getShopOll();
-
+        return shopService.getAllShops();
     }
 
-    @DeleteMapping("/delete") //http://localhost:8080/delete?shopId=1
+    @DeleteMapping("/delete")
     public Shop deleteShopById(@RequestParam(value = "shopId") String shopId) {
         return shopService.deleteShopById(shopId);
-
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Shop update(@RequestBody Shop shop, @PathVariable String id) {
-
         return shopService.patchShop(shop, id);
     }
 }

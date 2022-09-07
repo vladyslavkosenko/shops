@@ -1,11 +1,12 @@
 package com.example.shops.entity;
+
 public class Shop {
-    String id;
-    String city;
-    String street;
-    String name;
-    String employees;
-    Boolean website;
+    private String id;
+    private String city;
+    private String street;
+    private String name;
+    private String employees;
+    private Boolean website;
 
     public Shop(String id, String city, String street, String name, String employees, Boolean website) {
         this.id = id;

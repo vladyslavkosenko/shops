@@ -22,7 +22,7 @@ public class ShopService {
         return null;
     }
 
-    public HashMap<String, Shop> getShopOll() {
+    public HashMap<String, Shop> getAllShops() {
         return db;
     }
 
