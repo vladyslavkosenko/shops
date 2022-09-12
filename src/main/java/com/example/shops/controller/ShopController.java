@@ -1,6 +1,7 @@
 package com.example.shops.controller;
 
 import com.example.shops.entity.Shop;
+import com.example.shops.exception.ShopNotFoundException;
 import com.example.shops.service.ShopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class ShopController {
     }
 
     @GetMapping("/shops/{shopId}")
-    public Shop getShopById(@PathVariable("shopId") String shopId) {
+    public Shop getShopById(@PathVariable("shopId") String shopId) throws ShopNotFoundException {
         return shopService.getShopById(shopId);
     }
 
@@ -34,7 +35,7 @@ public class ShopController {
     }
 
     @DeleteMapping("/delete")
-    public Shop deleteShopById(@RequestParam(value = "shopId") String shopId) {
+    public Shop deleteShopById(@RequestParam(value = "shopId") String shopId) throws ShopNotFoundException {
         return shopService.deleteShopById(shopId);
     }
 
