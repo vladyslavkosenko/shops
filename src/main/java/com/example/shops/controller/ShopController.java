@@ -29,7 +29,7 @@ public class ShopController {
     }
 
     @GetMapping("/shops/oll")
-    public HashMap<String, Shop> getShopOll() {
+    public HashMap<String, Shop> getAllShops () {
         return shopService.getAllShops();
     }
 
