@@ -26,7 +26,7 @@ public class ShopController {
     }
 
     @SneakyThrows
-    @PostMapping
+    @PostMapping("/addShops")
     public Shop addShop(HttpServletRequest reg, HttpServletResponse response) {
         BufferedReader reader = reg.getReader();
         String shopJson = reader.lines().collect(Collectors.joining());
@@ -37,13 +37,13 @@ public class ShopController {
     }
 
     @SneakyThrows
-    @GetMapping("/shops")
+    @GetMapping("/getShops")
     public void getAllShop(HttpServletRequest reg, HttpServletResponse response) {
         PrintWriter writer = response.getWriter();
         shopService.getAllShop(writer);
     }
 
-    @PostMapping(value = "/shop",
+    @PostMapping(value = "/postShops",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ShopDto shopDto(@RequestBody ShopDto shopDto) {
         return shopService.addShop(shopDto);
