@@ -1,6 +1,7 @@
 package com.example.shops.service;
 
 import com.example.shops.entity.Shop;
+import com.example.shops.entity.ShopDto;
 import com.example.shops.exception.ShopNotFoundException;
 import com.example.shops.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,36 @@ import java.util.HashMap;
 public class ShopService {
     private final ShopRepository shopRepository;
     private final HashMap<Long, Shop> db = new HashMap<>();
+
+    private Shop convertToEntity(ShopDto shopDto) {
+        Shop shop = new Shop();
+        shop.setCity(shopDto.getCity());
+        shop.setStreet(shopDto.getStreet());
+        shop.setName(shopDto.getName());
+        shop.setWebsite(shopDto.getWebsite());
+        return shop;
+    }
+
+    private ShopDto convertToDto(Shop shop) {
+        ShopDto shopDto = new ShopDto();
+        shopDto.setCity(shop.getCity());
+        shopDto.setStreet(shop.getStreet());
+        shopDto.setName(shop.getName());
+        shopDto.setWebsite(shop.getWebsite());
+        return shopDto;
+    }
+
+    public void getAllShop(PrintWriter writer) {
+        db.entrySet()
+                .forEach(e -> writer.println(e.getValue() + "[" + e.getKey() + "]"));
+        writer.flush();
+    }
+
+    public ShopDto addShop(ShopDto shopDto) {
+        Shop shop = convertToEntity(shopDto);
+        shopRepository.save(shop);
+        return shopDto;
+    }
 
 
     public Shop addShop(Shop shop) {
@@ -35,7 +66,6 @@ public class ShopService {
         isFound(shopId);
         return db.remove(shopId);
     }
-
     public Shop patchShop(Shop shop, Long id) {
         Shop shopRequestBody = db.get(id);
         shopRequestBody.setName(shop.getName());
@@ -46,15 +76,10 @@ public class ShopService {
         return shop;
     }
 
-        public void putSop(Shop shop){
+    public void putSop(Shop shop) {
         db.put(shop.getId(), shop);
     }
-    public void getAllShop(PrintWriter writer){
-        db.entrySet()
-                .forEach(e -> writer.println(e.getValue() + "[" + e.getKey() + "]"));
-        writer.flush();
 
-    }
     public void isFound(Long shopId) throws ShopNotFoundException {
         if (!db.containsKey(shopId))
             throw new ShopNotFoundException(

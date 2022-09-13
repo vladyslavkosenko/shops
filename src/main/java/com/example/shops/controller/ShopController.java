@@ -1,6 +1,7 @@
 package com.example.shops.controller;
 
 import com.example.shops.entity.Shop;
+import com.example.shops.entity.ShopDto;
 import com.example.shops.exception.ShopNotFoundException;
 import com.example.shops.service.ShopService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,12 +16,37 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+
 @RestController
 public class ShopController {
     private final ShopService shopService;
 
     public ShopController(ShopService shopService) {
         this.shopService = shopService;
+    }
+
+    @SneakyThrows
+    @PostMapping
+    public Shop addShop(HttpServletRequest reg, HttpServletResponse response) {
+        BufferedReader reader = reg.getReader();
+        String shopJson = reader.lines().collect(Collectors.joining());
+        ObjectMapper objectMapper = new ObjectMapper();
+        Shop shop = objectMapper.readValue(shopJson, Shop.class);
+        shopService.putSop(shop);
+        return shop;
+    }
+
+    @SneakyThrows
+    @GetMapping("/shops")
+    public void getAllShop(HttpServletRequest reg, HttpServletResponse response) {
+        PrintWriter writer = response.getWriter();
+        shopService.getAllShop(writer);
+    }
+
+    @PostMapping(value = "/shop",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ShopDto shopDto(@RequestBody ShopDto shopDto) {
+        return shopService.addShop(shopDto);
     }
 
     @PostMapping(value = "/shops",
@@ -35,7 +61,7 @@ public class ShopController {
     }
 
     @GetMapping("/shops/oll")
-    public HashMap<Long, Shop> getAllShops () {
+    public HashMap<Long, Shop> getAllShops() {
         return shopService.getAllShops();
     }
 
@@ -47,23 +73,6 @@ public class ShopController {
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Shop update(@RequestBody Shop shop, @PathVariable Long id) {
         return shopService.patchShop(shop, id);
-    }
-    @SneakyThrows
-    @PostMapping
-    public Shop addShop(HttpServletRequest reg, HttpServletResponse response) {
-        BufferedReader reader = reg.getReader();
-        String shopJson = reader.lines().collect(Collectors.joining());
-        ObjectMapper objectMapper = new ObjectMapper();
-        Shop shop = objectMapper.readValue(shopJson, Shop.class);
-        shopService.putSop(shop);
-        System.out.println("user added");
-        return shop;
-    }
-    @SneakyThrows
-    @GetMapping
-    public void getAllShop(HttpServletRequest reg, HttpServletResponse response) {
-        PrintWriter writer = response.getWriter();
-       shopService.getAllShop(writer);
     }
 
 }
