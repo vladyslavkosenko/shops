@@ -3,6 +3,7 @@ package com.example.shops.controller;
 import com.example.shops.entity.Shop;
 import com.example.shops.entity.ShopDto;
 import com.example.shops.exception.ShopNotFoundException;
+import com.example.shops.service.DtoManager;
 import com.example.shops.service.ShopService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -16,16 +17,15 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-
 @RestController
 public class ShopController {
     private final ShopService shopService;
-
-    public ShopController(ShopService shopService) {
+    public ShopController(ShopService shopService, DtoManager dtoManager) {
         this.shopService = shopService;
-    }
 
+    }
     @SneakyThrows
+
     @PostMapping("/addShops")
     public Shop addShop(HttpServletRequest reg, HttpServletResponse response) {
         BufferedReader reader = reg.getReader();
@@ -35,7 +35,6 @@ public class ShopController {
         shopService.putSop(shop);
         return shop;
     }
-
     @SneakyThrows
     @GetMapping("/getShops")
     public void getAllShop(HttpServletRequest reg, HttpServletResponse response) {
@@ -58,6 +57,11 @@ public class ShopController {
     @GetMapping("/shops/{shopId}")
     public Shop getShopById(@PathVariable("shopId") Long shopId) throws ShopNotFoundException {
         return shopService.getShopById(shopId);
+    }
+
+    @GetMapping("/dto/{shopId}")
+    public ShopDto getDtoShopById(@PathVariable("shopId") Long shopId) throws ShopNotFoundException {
+        return shopService.getDtoShopById(shopId);
     }
 
     @GetMapping("/shops/oll")

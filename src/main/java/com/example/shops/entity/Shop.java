@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-
 @Getter
 @Setter
 @ToString
@@ -18,7 +17,6 @@ public class Shop {
     private String street;
     private String name;
     private String employees;
-
     private Boolean website;
 
     public Shop(String city, String street, String name, String employees, Boolean website) {
@@ -28,5 +26,4 @@ public class Shop {
         this.employees = employees;
         this.website = website;
     }
-
 }

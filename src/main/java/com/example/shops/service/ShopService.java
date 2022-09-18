@@ -4,35 +4,24 @@ import com.example.shops.entity.Shop;
 import com.example.shops.entity.ShopDto;
 import com.example.shops.exception.ShopNotFoundException;
 import com.example.shops.repository.ShopRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-@RequiredArgsConstructor
 @Service
 public class ShopService {
     private final ShopRepository shopRepository;
     private final HashMap<Long, Shop> db = new HashMap<>();
+    @Autowired
+    private final DtoManager dtoManager;
 
-    private Shop convertToEntity(ShopDto shopDto) {
-        Shop shop = new Shop();
-        shop.setCity(shopDto.getCity());
-        shop.setStreet(shopDto.getStreet());
-        shop.setName(shopDto.getName());
-        shop.setWebsite(shopDto.getWebsite());
-        return shop;
+    public ShopService(ShopRepository shopRepository, DtoManager dtoManager) {
+        this.shopRepository = shopRepository;
+        this.dtoManager = dtoManager;
     }
 
-    private ShopDto convertToDto(Shop shop) {
-        ShopDto shopDto = new ShopDto();
-        shopDto.setCity(shop.getCity());
-        shopDto.setStreet(shop.getStreet());
-        shopDto.setName(shop.getName());
-        shopDto.setWebsite(shop.getWebsite());
-        return shopDto;
-    }
 
     public void getAllShop(PrintWriter writer) {
         db.entrySet()
@@ -41,11 +30,10 @@ public class ShopService {
     }
 
     public ShopDto addShop(ShopDto shopDto) {
-        Shop shop = convertToEntity(shopDto);
+        Shop shop = dtoManager.convertToEntity(shopDto);
         shopRepository.save(shop);
         return shopDto;
     }
-
 
     public Shop addShop(Shop shop) {
         db.put(shop.getId(), shop);
@@ -56,8 +44,11 @@ public class ShopService {
         isFound(shopId);
         return db.get(shopId);
     }
-
-
+    public ShopDto getDtoShopById(Long shopId) throws ShopNotFoundException {
+        isFound(shopId);
+        var b = db.get(shopId);
+        return dtoManager.convertToDto(b);
+    }
     public HashMap<Long, Shop> getAllShops() {
         return db;
     }
@@ -66,6 +57,7 @@ public class ShopService {
         isFound(shopId);
         return db.remove(shopId);
     }
+
     public Shop patchShop(Shop shop, Long id) {
         Shop shopRequestBody = db.get(id);
         shopRequestBody.setName(shop.getName());

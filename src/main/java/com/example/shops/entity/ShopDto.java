@@ -8,5 +8,4 @@ public class ShopDto {
     private String street;
     private String name;
     private Boolean website;
-
 }
